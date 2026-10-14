@@ -1,0 +1,2 @@
+# Kaspah
+Lotto Prediction Application
