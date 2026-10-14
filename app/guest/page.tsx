@@ -1,5 +1,5 @@
 import { abandonGuest, clearGuestCountry, setGuestCountry, startGuestReading } from "@/app/actions/guest";
-import { MistLines } from "@/components/mist";
+import { GuestAsking, MistLines } from "@/components/mist";
 import { SubmitButton } from "@/components/submit";
 import { Disclaimer, NumbersCard, RefusalCard } from "@/components/ui";
 import { COOKIE_GUEST, COOKIE_GUEST_COUNTRY, COUNTRY_TIMEZONES, SYSTEM_TRY_AGAIN } from "@/lib/constants";
@@ -36,8 +36,15 @@ export default async function GuestPage({ searchParams }: { searchParams: Promis
   if (!country) {
     return (
       <main id="content" className="narrow stack">
-        <p className="voice">The Great Kaspah</p>
-        <p className="kaspah">No account? No matter. Step closer, traveller, and let the Great Kaspah gaze for you — once, as a guest.</p>
+        <div className="chamber">
+          <figure className="presence">
+            <img src="/kaspah.jpeg" alt="" width={1325} height={1600} />
+          </figure>
+          <div>
+            <p className="voice">The Great Kaspah</p>
+            <p className="kaspah">No account? No matter. Step closer, traveller, and let the Great Kaspah gaze for you — once, as a guest.</p>
+          </div>
+        </div>
         <p className="kaspah">Where are you from? Speak the country, and only then will I name the games I can see.</p>
         {notice === "quiet" ? <p className="system-card">The crystal needs a quiet moment. Please try again shortly.</p> : null}
         {notice === "country" ? <p className="form-error">Choose a country from the list.</p> : null}
@@ -77,10 +84,18 @@ export default async function GuestPage({ searchParams }: { searchParams: Promis
 
   return (
     <main id="content" className="narrow stack">
-      <p className="voice">The Great Kaspah</p>
-      <p className="kaspah">And which lotto in {place} shall I gaze upon? One only, for a guest.</p>
+      <div className="chamber">
+        <figure className="presence">
+          <img src="/kaspah.jpeg" alt="" width={1325} height={1600} />
+        </figure>
+        <div>
+          <p className="voice">The Great Kaspah</p>
+          <p className="kaspah">And which lotto in {place} shall I gaze upon? One only, for a guest.</p>
+        </div>
+      </div>
       {notice === "lotto" ? <p className="form-error">Choose one of the lottos offered for that country.</p> : null}
       <form action={startGuestReading} className="stack">
+        <GuestAsking />
         <div className="lotto-list">
           {games.map((game) => (
             <label key={game.id} className="lotto-option">
@@ -128,9 +143,16 @@ async function GuestChamber({
   const pitch = stablePick(await copy("guest_pitch"), row.id);
   if (remaining > 0) {
     return (
-      <main id="content" className="narrow stack">
+      <main id="content" className="stack">
         <meta httpEquiv="refresh" content={String(Math.max(2, Math.ceil(remaining / 1000)))} />
-        <MistLines lines={progress} pitch={pitch} />
+        <MistLines
+          lines={progress}
+          pitch={pitch}
+          lottoName={row.lottoName}
+          requestedAt={new Date(row.requestedAt).toISOString()}
+          revealAt={new Date(row.revealAt).toISOString()}
+        />
+        <div className="narrow stack">
         <p className="quiet">Leaving this page ends the guest reading.</p>
         <div className="actions">
           <a className="btn gold" href="/register">
@@ -149,6 +171,7 @@ async function GuestChamber({
           <p>This page continues on its own when the review is finished.</p>
         </noscript>
         <Disclaimer />
+        </div>
       </main>
     );
   }

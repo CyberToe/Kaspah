@@ -9,16 +9,16 @@ export default async function LandingPage() {
   if (user) redirect(onboardingPath(user) ?? "/readings");
   return (
     <main id="content" className="wrap">
-      <section className="hero">
-        <figure className="poster-frame">
+      <section className="stage">
+        <figure className="stage-frame">
           <img
-            src="/kaspah.jpg"
-            width={700}
-            height={845}
-            alt="The Great Kaspah, in a gold turban and deep-red robe, holds his hands over a glowing crystal ball filled with lotto balls."
+            src="/kaspah.jpeg"
+            width={1325}
+            height={1600}
+            alt="The Great Kaspah, in a gold turban and burgundy velvet robe, smiles over a glowing crystal ball filled with lotto balls. Lanterns and red curtains frame a gold sign that reads The Great Kaspah."
           />
         </figure>
-        <div>
+        <div className="stage-copy">
           <p className="eyebrow">Entertainment only</p>
           <h1>The Great Kaspah</h1>
           <p className="tagline">Lotto numbers, revealed — when the crystal ball feels like it.</p>

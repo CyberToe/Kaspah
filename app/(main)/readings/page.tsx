@@ -13,9 +13,21 @@ export default async function ReadingsPage() {
   if (home.kind === "need-selection") redirect("/profile/lottos");
   return (
     <main id="content" className="wrap stack">
-      <p className="eyebrow">The inner chamber</p>
-      <h1>Ask Kaspah</h1>
-      <p className="kaspah">Ah, {user.profile?.displayName}. The glass knows you. Each game has its own row. Ask one, and the others stay as they were.</p>
+      <div className="chamber">
+        <figure className="presence">
+          <img
+            src="/kaspah.jpeg"
+            width={1325}
+            height={1600}
+            alt="The Great Kaspah, in a gold turban and burgundy robe, beside his crystal ball."
+          />
+        </figure>
+        <div>
+          <p className="eyebrow">The inner chamber</p>
+          <h1>Ask Kaspah</h1>
+          <p className="kaspah">Ah, {user.profile?.displayName}. The glass knows you. Each game has its own row. Ask one, and the others stay as they were.</p>
+        </div>
+      </div>
       <Disclaimer />
       {home.kind === "unavailable" ? (
         <p className="system-card">

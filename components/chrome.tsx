@@ -1,6 +1,34 @@
 import { logout } from "@/app/actions/auth";
 import { Disclaimer } from "./ui";
 
+function Mark({ href }: { href?: string }) {
+  const portrait = (
+    <span className="medallion">
+      <img src="/kaspah.jpeg" alt="" width={1325} height={1600} />
+    </span>
+  );
+  const sign = (
+    <span className="brand">
+      <span className="brand-small">The Great</span>
+      <span className="brand-name">Kaspah</span>
+    </span>
+  );
+  if (!href) {
+    return (
+      <div className="brand-lockup">
+        {portrait}
+        {sign}
+      </div>
+    );
+  }
+  return (
+    <a className="brand-lockup" href={href}>
+      {portrait}
+      {sign}
+    </a>
+  );
+}
+
 export function SiteHeader({
   user,
 }: {
@@ -8,9 +36,7 @@ export function SiteHeader({
 }) {
   return (
     <header className="site-header">
-      <a className="brand" href={user?.ready ? "/readings" : "/"}>
-        The Great Kaspah
-      </a>
+      <Mark href={user?.ready ? "/readings" : "/"} />
       <nav>
         {user?.ready ? (
           <>
@@ -56,7 +82,7 @@ export function SiteFooter() {
 export function GuestHeader() {
   return (
     <header className="guest-header">
-      <span className="brand">The Great Kaspah</span>
+      <Mark />
       <a href="/">Leave</a>
     </header>
   );
