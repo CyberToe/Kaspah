@@ -1,6 +1,9 @@
+import { ClearGuest } from "@/components/clear-guest";
+
 export default function ShareLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <ClearGuest />
       <div className="share-brand">
         <div className="brand-lockup">
           <span className="medallion">

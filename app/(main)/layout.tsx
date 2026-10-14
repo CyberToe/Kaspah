@@ -1,3 +1,4 @@
+import { ClearGuest } from "@/components/clear-guest";
 import { SiteFooter, SiteHeader } from "@/components/chrome";
 import { getCurrentUser, onboardingPath } from "@/lib/session";
 
@@ -8,6 +9,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     : null;
   return (
     <>
+      <ClearGuest />
       <SiteHeader user={view} />
       {children}
       <SiteFooter />
