@@ -141,9 +141,15 @@ p { line-height: 1.55; }
 .disclaimer p, .system-card p { margin: 0.35rem 0; }
 .voice { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
 
-.stage { display: grid; justify-items: center; padding-top: 0.2rem; }
+.stage {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.86fr) minmax(0, 1.14fr);
+  gap: 1.4rem 2rem;
+  align-items: center;
+  padding-top: 0.2rem;
+}
 .stage-frame {
-  width: min(680px, 100%);
+  width: 100%;
   padding: 14px;
   border-radius: 26px;
   background:
@@ -156,16 +162,15 @@ p { line-height: 1.55; }
 }
 .stage-frame img { display: block; width: 100%; height: auto; border-radius: 16px; }
 .stage-copy {
-  width: min(680px, 100%);
-  margin-top: 1.15rem;
-  text-align: center;
+  margin-top: 0;
+  text-align: left;
   padding: 1.2rem 1.3rem 0.4rem;
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(74, 16, 32, 0.55), rgba(12, 8, 16, 0.2));
   border: 1px solid var(--line);
 }
-.stage-copy .actions { justify-content: center; }
-.stage-copy h1 { letter-spacing: 0.06em; }
+.stage-copy .actions { justify-content: flex-start; }
+.stage-copy h1 { letter-spacing: 0.06em; font-size: clamp(2rem, 3.4vw, 3.1rem); }
 
 .panel, .row-card, .auth-card {
   background:
@@ -380,6 +385,10 @@ input, select, textarea {
 }
 
 @media (max-width: 800px) {
+  .stage { grid-template-columns: 1fr; justify-items: center; }
+  .stage-frame { width: min(480px, 100%); }
+  .stage-copy { width: min(680px, 100%); text-align: center; }
+  .stage-copy .actions { justify-content: center; }
   .site-header { align-items: flex-start; flex-direction: column; }
   .ball { width: 44px; height: 44px; }
   .chamber { grid-template-columns: 96px 1fr; }
