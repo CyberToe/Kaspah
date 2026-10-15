@@ -1,11 +1,11 @@
 import { DISCLAIMER, FEELING_NOTE, RESPONSIBLE } from "@/lib/constants";
 import { phraseFor } from "@/lib/phrases";
 
-export function Disclaimer() {
+export function Disclaimer({ lead = DISCLAIMER, responsible = RESPONSIBLE }: { lead?: string; responsible?: string }) {
   return (
     <aside className="disclaimer">
-      <p>{DISCLAIMER}</p>
-      <p>{RESPONSIBLE}</p>
+      <p>{lead}</p>
+      <p>{responsible}</p>
     </aside>
   );
 }
@@ -64,6 +64,9 @@ export function NumbersCard({
   createdLabel,
   nextDraw,
   provided = true,
+  phraseOverride,
+  feeling = FEELING_NOTE,
+  attribution = "The Great Kaspah provided these numbers.",
 }: {
   lottoName: string;
   countryName: string;
@@ -75,8 +78,11 @@ export function NumbersCard({
   createdLabel: string;
   nextDraw?: string | null;
   provided?: boolean;
+  phraseOverride?: string | null;
+  feeling?: string;
+  attribution?: string;
 }) {
-  const phrase = phraseFor(confidenceLevel);
+  const phrase = phraseOverride !== undefined ? phraseOverride : phraseFor(confidenceLevel);
   return (
     <div className="reading">
       <p className="meta">
@@ -87,20 +93,20 @@ export function NumbersCard({
       <p className="kaspah">{sentimentMessage}</p>
       {personalNote ? <p className="kaspah">{personalNote}</p> : null}
       <Stars level={confidenceLevel} />
-      <p className="feeling-note">{FEELING_NOTE}</p>
+      <p className="feeling-note">{feeling}</p>
       <p className="quiet">
         {createdLabel}
         {nextDraw ? ` · ${nextDraw}` : ""}
       </p>
-      {provided ? <p className="quiet">The Great Kaspah provided these numbers.</p> : null}
+      {provided ? <p className="quiet">{attribution}</p> : null}
     </div>
   );
 }
 
-export function RefusalCard({ message }: { message: string }) {
+export function RefusalCard({ message, voice = "The Great Kaspah" }: { message: string; voice?: string }) {
   return (
     <div>
-      <p className="voice">The Great Kaspah</p>
+      <p className="voice">{voice}</p>
       <p className="kaspah">{message}</p>
     </div>
   );

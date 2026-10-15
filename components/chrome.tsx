@@ -60,6 +60,7 @@ export function SiteHeader({
           </>
         ) : (
           <>
+            <a href="/lab">LottoLab</a>
             <a href="/login">Log in</a>
             <a className="btn gold small" href="/register">
               Create an account

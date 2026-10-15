@@ -1,6 +1,7 @@
 export const COOKIE_SESSION = "kaspah_session";
 export const COOKIE_GUEST = "kaspah_guest";
 export const COOKIE_GUEST_COUNTRY = "kaspah_guest_country";
+export const COOKIE_GUEST_BENCH = "kaspah_guest_bench";
 
 export const DISCLAIMER =
   "The Great Kaspah is for entertainment only. Numbers are generated at random, no reading changes the odds of winning, and this app does not provide financial or gambling advice.";

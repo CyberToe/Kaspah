@@ -2,7 +2,7 @@ import { abandonGuest, clearGuestCountry, setGuestCountry, startGuestReading } f
 import { GuestAsking, MistLines } from "@/components/mist";
 import { SubmitButton } from "@/components/submit";
 import { Disclaimer, NumbersCard, RefusalCard } from "@/components/ui";
-import { COOKIE_GUEST, COOKIE_GUEST_COUNTRY, COUNTRY_TIMEZONES, SYSTEM_TRY_AGAIN } from "@/lib/constants";
+import { COOKIE_GUEST, COOKIE_GUEST_BENCH, COOKIE_GUEST_COUNTRY, COUNTRY_TIMEZONES, SYSTEM_TRY_AGAIN } from "@/lib/constants";
 import { formatReadingDate, nextDrawLabel } from "@/lib/dates";
 import { findGuest, linesByKind, lottosForCountry, offeredCountries } from "@/lib/data";
 import { asNumberArray, asStringArray } from "@/lib/json";
@@ -26,7 +26,8 @@ export default async function GuestPage({ searchParams }: { searchParams: Promis
   if (await getCurrentUser()) redirect("/readings");
   const notice = (await searchParams).notice;
   const guestId = await readCookie(COOKIE_GUEST);
-  if (guestId) {
+  const bench = await readCookie(COOKIE_GUEST_BENCH);
+  if (guestId && bench !== "lab") {
     const row = await findGuest(guestId);
     if (row) return <GuestChamber row={row} />;
   }

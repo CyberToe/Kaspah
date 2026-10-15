@@ -9,19 +9,21 @@ function Across({
   line,
   pitch,
   progress,
+  portrait = "/kaspah.jpeg",
 }: {
   title: string;
   detail?: string;
   line?: string;
   pitch?: string;
   progress: number | null;
+  portrait?: string;
 }) {
   return (
     <section className="reading-banner" role="status" aria-live="polite">
       <div className="reading-sweep" aria-hidden="true" />
       <div className="reading-banner-inner">
         <figure className="presence reading-presence">
-          <img src="/kaspah.jpeg" alt="" width={1325} height={1600} />
+          <img src={portrait} alt="" width={689} height={947} />
         </figure>
         <div>
           <p className="reading-status">{title}</p>
@@ -38,12 +40,20 @@ function Across({
   );
 }
 
-export function GuestAsking() {
+export function GuestAsking({
+  portrait = "/kaspah.jpeg",
+  title = "A reading is on its way",
+  detail = "Kaspah has turned to the glass. Stay on this page.",
+}: {
+  portrait?: string;
+  title?: string;
+  detail?: string;
+} = {}) {
   const { pending } = useFormStatus();
   if (!pending) return null;
   return (
     <div className="reading-banner-fixed">
-      <Across title="A reading is on its way" detail="Kaspah has turned to the glass. Stay on this page." progress={null} />
+      <Across title={title} detail={detail} progress={null} portrait={portrait} />
     </div>
   );
 }
@@ -54,12 +64,22 @@ export function MistLines({
   lottoName,
   requestedAt,
   revealAt,
+  portrait = "/kaspah.jpeg",
+  waitingTitle = "A reading is on its way",
+  readyTitle = "Your reading is ready",
+  waitingDetail,
+  readyDetail,
 }: {
   lines: string[];
   pitch: string;
   lottoName: string;
   requestedAt: string;
   revealAt: string;
+  portrait?: string;
+  waitingTitle?: string;
+  readyTitle?: string;
+  waitingDetail?: string;
+  readyDetail?: string;
 }) {
   const [index, setIndex] = useState(0);
   const [now, setNow] = useState(() => Date.now());
@@ -80,8 +100,9 @@ export function MistLines({
 
   return (
     <Across
-      title={ready ? "Your reading is ready" : "A reading is on its way"}
-      detail={ready ? `${lottoName}. The page will show it in a moment.` : `${lottoName}. The glass is still turning. Stay on this page.`}
+      portrait={portrait}
+      title={ready ? readyTitle : waitingTitle}
+      detail={ready ? readyDetail ?? `${lottoName}. The page will show it in a moment.` : waitingDetail ?? `${lottoName}. The glass is still turning. Stay on this page.`}
       line={lines[index] ?? lines[0]}
       pitch={pitch}
       progress={progress}

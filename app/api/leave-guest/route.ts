@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { COOKIE_GUEST, COOKIE_GUEST_BENCH, COOKIE_GUEST_COUNTRY } from "@/lib/constants";
 
-const GUEST_COOKIES = ["kaspah_guest", "kaspah_guest_country"];
+const GUEST_COOKIES = [COOKIE_GUEST, COOKIE_GUEST_COUNTRY, COOKIE_GUEST_BENCH];
 
 export async function POST() {
   const response = NextResponse.json({ ok: true });

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { COOKIE_GUEST, COOKIE_GUEST_COUNTRY, COOKIE_SESSION } from "./constants";
+import { COOKIE_GUEST, COOKIE_GUEST_BENCH, COOKIE_GUEST_COUNTRY, COOKIE_SESSION } from "./constants";
 import { getDb } from "./db";
 import type { Touches } from "./engine";
 import { asTouches } from "./json";
@@ -125,7 +125,10 @@ export function hashSecret(token: string) {
   return createHash("sha256").update(token).digest("hex");
 }
 
-export async function setGuestCookie(name: typeof COOKIE_GUEST | typeof COOKIE_GUEST_COUNTRY, value: string) {
+export async function setGuestCookie(
+  name: typeof COOKIE_GUEST | typeof COOKIE_GUEST_COUNTRY | typeof COOKIE_GUEST_BENCH,
+  value: string,
+) {
   const jar = await cookies();
   jar.set(name, value, cookieOptions(60 * 30));
 }
@@ -134,6 +137,7 @@ export async function clearGuestCookies() {
   const jar = await cookies();
   jar.set(COOKIE_GUEST, "", cookieOptions(0));
   jar.set(COOKIE_GUEST_COUNTRY, "", cookieOptions(0));
+  jar.set(COOKIE_GUEST_BENCH, "", cookieOptions(0));
 }
 
 export async function readCookie(name: string) {
