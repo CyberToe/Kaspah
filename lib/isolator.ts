@@ -1,11 +1,13 @@
 import "server-only";
 
-import fs from "node:fs";
-import path from "node:path";
-import { analyze, generate, GAMES, TIERS, type IsolatorAnalysis } from "lotto-gate-core";
 import { ISOLATOR_PROVIDER } from "./constants";
+import { analyze, generate, GAMES, TIERS, type GateAnalysis, type GateDraw, type GateGameKey } from "./gate";
+import l649 from "../data/isolator/l649.json";
+import lmax from "../data/isolator/lmax.json";
+import q49 from "../data/isolator/q49.json";
+import qmax from "../data/isolator/qmax.json";
 
-export type IsolatorGameKey = "lmax" | "qmax" | "l649" | "q49";
+export type IsolatorGameKey = GateGameKey;
 
 const LOTTO_TO_GAME: Record<string, IsolatorGameKey> = {
   "ca-lotto-max": "lmax",
@@ -14,7 +16,14 @@ const LOTTO_TO_GAME: Record<string, IsolatorGameKey> = {
   "ca-quebec-49": "q49",
 };
 
-const analysisCache = new Map<string, IsolatorAnalysis>();
+const DRAW_HISTORY: Record<IsolatorGameKey, GateDraw[]> = {
+  lmax: lmax as GateDraw[],
+  qmax: qmax as GateDraw[],
+  l649: l649 as GateDraw[],
+  q49: q49 as GateDraw[],
+};
+
+const analysisCache = new Map<string, GateAnalysis>();
 
 export function isolatorGameFor(lottoId: string): IsolatorGameKey | null {
   return LOTTO_TO_GAME[lottoId] ?? null;
@@ -34,22 +43,11 @@ export function isolatorRules(game: IsolatorGameKey) {
   };
 }
 
-function drawsPath(game: IsolatorGameKey) {
-  return path.join(process.cwd(), "data", "isolator", `${game}.json`);
-}
-
-function loadDraws(game: IsolatorGameKey): Array<number[] | { numbers: number[] }> {
-  const file = drawsPath(game);
-  if (!fs.existsSync(file)) return [];
-  const raw = JSON.parse(fs.readFileSync(file, "utf8")) as unknown;
-  return Array.isArray(raw) ? (raw as Array<number[] | { numbers: number[] }>) : [];
-}
-
-function analysisFor(game: IsolatorGameKey): IsolatorAnalysis {
+function analysisFor(game: IsolatorGameKey): GateAnalysis {
   const cached = analysisCache.get(game);
   if (cached) return cached;
   if (!GAMES[game]) throw new Error(`Unknown isolator game: ${game}`);
-  const next = analyze(game, loadDraws(game));
+  const next = analyze(game, DRAW_HISTORY[game] ?? []);
   analysisCache.set(game, next);
   return next;
 }

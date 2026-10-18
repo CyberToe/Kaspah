@@ -1,16 +1,6 @@
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
 import test from "node:test";
-
-const require = createRequire(import.meta.url);
-const { GAMES, analyze, generate } = require("lotto-gate-core") as {
-  GAMES: Record<string, { k: number; maxN: number }>;
-  analyze: (game: string, draws: unknown[]) => { k: number; maxN: number };
-  generate: (
-    analysis: { k: number; maxN: number },
-    options?: { tier?: string; count?: number; rng?: () => number },
-  ) => number[][];
-};
+import { analyze, generate, GAMES } from "./gate";
 
 function mulberry32(seed: number) {
   return function rng() {
