@@ -1,3 +1,0 @@
-#!/bin/sh
-echo "Running pre-push checks..."
-npm run prepush || { echo "Push blocked: fix the errors above."; exit 1; }
