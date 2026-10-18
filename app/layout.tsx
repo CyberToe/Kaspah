@@ -1,15 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
-
-const display = Cinzel({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700"] });
-const serif = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
-});
-const sans = Outfit({ subsets: ["latin"], variable: "--font-ui", weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {
   title: { default: "The Great Kaspah", template: "%s · The Great Kaspah" },
@@ -20,7 +10,15 @@ export const dynamic = "force-dynamic";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${serif.variable} ${sans.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Outfit:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <a className="skip" href="#content">
           Skip to content

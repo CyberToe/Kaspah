@@ -1,4 +1,7 @@
 :root {
+  --font-display: "Cinzel", Georgia, serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-ui: "Outfit", "Segoe UI", sans-serif;
   --night: #0c0812;
   --curtain: #4a1020;
   --wine: #6d1830;
