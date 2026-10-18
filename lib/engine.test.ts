@@ -186,3 +186,33 @@ test("lucky inclusion is off unless the flag is on, and never uses an invalid nu
   }
   assert.ok(included > 10 && skipped > 10);
 });
+
+test("forced mains keep isolator sets and skip bonus when the lotto has none", () => {
+  const rules: LottoRules = {
+    mainCount: 6,
+    mainMin: 1,
+    mainMax: 49,
+    bonusCount: 0,
+    bonusMin: null,
+    bonusMax: null,
+    bonusFromMainPool: false,
+  };
+  const mains = [4, 11, 19, 27, 33, 41];
+  const reading = createReading({
+    rules,
+    refusalRate: 0,
+    weights: DEFAULT_WEIGHTS,
+    library,
+    touches: null,
+    luckyInclusion: false,
+    mains,
+    providerName: "isolator",
+    providerVersion: "0.1.0",
+    rng: mulberry32(9),
+  });
+  assert.equal(reading.outcome, "numbers");
+  assert.deepEqual(reading.mainNumbers, mains);
+  assert.equal(reading.bonusNumbers, null);
+  assert.equal(reading.providerName, "isolator");
+  assert.equal(validateNumbers(rules, reading.mainNumbers ?? [], reading.bonusNumbers ?? []), null);
+});
