@@ -104,11 +104,14 @@ export function createReading(input: {
   timeZone?: string;
   now?: Date;
   rng?: Rng;
+  mains?: number[] | null;
+  providerName?: string;
+  providerVersion?: string;
 }): ReadingDraft {
   const rng = input.rng ?? Math.random;
   const base = {
-    providerName: RANDOM_PROVIDER.name,
-    providerVersion: RANDOM_PROVIDER.version,
+    providerName: input.providerName ?? RANDOM_PROVIDER.name,
+    providerVersion: input.providerVersion ?? RANDOM_PROVIDER.version,
   };
   if (rng() < input.refusalRate) {
     const name = input.touches?.names[0]
@@ -131,37 +134,44 @@ export function createReading(input: {
   }
 
   let included: number | null = null;
-  const validLucky = [
-    ...new Set(
-      (input.touches?.luckyNumbers ?? []).filter(
-        (n) => Number.isInteger(n) && n >= input.rules.mainMin && n <= input.rules.mainMax,
-      ),
-    ),
-  ];
   let main: number[];
-  if (input.luckyInclusion && validLucky.length && rng() < 0.5) {
-    included = validLucky[Math.floor(rng() * validLucky.length)]!;
-    const rest = drawUnique(
-      input.rules.mainCount - 1,
-      input.rules.mainMin,
-      input.rules.mainMax,
-      new Set([included]),
-      rng,
-    );
-    main = [...rest, included].sort((a, b) => a - b);
+  if (input.mains?.length) {
+    main = [...input.mains].sort((a, b) => a - b);
   } else {
-    main = drawUnique(input.rules.mainCount, input.rules.mainMin, input.rules.mainMax, new Set(), rng);
-  }
-
-  const bonus = input.rules.bonusFromMainPool
-    ? drawUnique(input.rules.bonusCount, input.rules.mainMin, input.rules.mainMax, new Set(main), rng)
-    : drawUnique(
-        input.rules.bonusCount,
-        input.rules.bonusMin ?? 1,
-        input.rules.bonusMax ?? 1,
-        new Set(),
+    const validLucky = [
+      ...new Set(
+        (input.touches?.luckyNumbers ?? []).filter(
+          (n) => Number.isInteger(n) && n >= input.rules.mainMin && n <= input.rules.mainMax,
+        ),
+      ),
+    ];
+    if (input.luckyInclusion && validLucky.length && rng() < 0.5) {
+      included = validLucky[Math.floor(rng() * validLucky.length)]!;
+      const rest = drawUnique(
+        input.rules.mainCount - 1,
+        input.rules.mainMin,
+        input.rules.mainMax,
+        new Set([included]),
         rng,
       );
+      main = [...rest, included].sort((a, b) => a - b);
+    } else {
+      main = drawUnique(input.rules.mainCount, input.rules.mainMin, input.rules.mainMax, new Set(), rng);
+    }
+  }
+
+  const bonus =
+    input.rules.bonusCount === 0
+      ? []
+      : input.rules.bonusFromMainPool
+        ? drawUnique(input.rules.bonusCount, input.rules.mainMin, input.rules.mainMax, new Set(main), rng)
+        : drawUnique(
+            input.rules.bonusCount,
+            input.rules.bonusMin ?? 1,
+            input.rules.bonusMax ?? 1,
+            new Set(),
+            rng,
+          );
 
   const confidenceLevel = drawConfidence(input.weights, rng);
   const sentimentMessage = pick(input.library.sentiments[confidenceLevel] ?? [], rng);
