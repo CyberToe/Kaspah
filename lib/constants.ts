@@ -4,20 +4,18 @@ export const COOKIE_GUEST_COUNTRY = "kaspah_guest_country";
 export const COOKIE_GUEST_BENCH = "kaspah_guest_bench";
 
 export const DISCLAIMER =
-  "The Great Kaspah is for entertainment only. Numbers are shaped by filters for playable sets, not as predictions. No reading changes the odds of winning, and this app does not provide financial or gambling advice.";
+  "The Great Kaspah is for entertainment only. Numbers are generated at random, no reading changes the odds of winning, and this app does not provide financial or gambling advice.";
 
 export const RESPONSIBLE =
   "Buying a lottery ticket is age-restricted in most places. Follow the rules where you live. This app does not sell tickets, take money, check results, or claim prizes. A reading, a feeling, or a refusal is never a reason to spend more.";
 
 export const FEELING_NOTE =
-  "Kaspah's feeling is not a probability, and it is not a claim that one set is more likely to win. Numbers are shaped by filters for entertainment; every valid combination still has the same chance of being drawn.";
+  "Kaspah's feeling is not a probability, and it is not a claim that one set is more likely to win. Every valid combination has the same chance of being drawn.";
 
 export const SYSTEM_TRY_AGAIN =
   "Something went wrong preparing this reading. Please try again.";
 
 export const RANDOM_PROVIDER = { name: "random", version: "1.0.0" } as const;
-export const ISOLATOR_PROVIDER = { name: "isolator", version: "0.1.0" } as const;
-export const DEFAULT_ISOLATOR_TIER = "mid";
 
 export const DEFAULT_WEIGHTS = [30, 28, 22, 15, 5];
 export const DEFAULT_REFUSAL_RATE = 0.1;

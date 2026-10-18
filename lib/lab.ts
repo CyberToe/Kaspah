@@ -9,10 +9,10 @@ export const LAB_PHRASES: Record<number, string> = {
 };
 
 export const LAB_FEELING =
-  "The confidence score is not a probability, and it is not a claim that one set is more likely to win. Numbers are shaped by filters for playable sets; every valid combination still has the same chance of being drawn.";
+  "The confidence score is not a probability, and it is not a claim that one set is more likely to win. Every valid combination has the same chance of being drawn.";
 
 export const LAB_DISCLAIMER =
-  "LottoLab is for entertainment only. Numbers are shaped by filters for playable sets, not as predictions. No trial changes the odds of winning, and this app does not provide financial or gambling advice.";
+  "LottoLab is for entertainment only. Numbers are generated at random, no trial changes the odds of winning, and this app does not provide financial or gambling advice.";
 
 export const LAB_RESPONSIBLE =
   "Buying a lottery ticket is age-restricted in most places. Follow the rules where you live. This app does not sell tickets, take money, check results, or claim prizes. A result, a confidence score, or an inconclusive trial is never a reason to spend more.";
