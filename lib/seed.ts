@@ -62,6 +62,7 @@ const SETTING_SEED: Record<string, string> = {
 export async function seedIfEmpty(db: {
   select: Function;
   insert: Function;
+  update: Function;
 }) {
   const existingCountries = await db.select().from(countries);
   if (existingCountries.length === 0) {
@@ -88,6 +89,38 @@ export async function seedIfEmpty(db: {
     .filter(([key]) => !keys.has(key))
     .map(([key, value]) => ({ key, value, updatedBy: "seed" }));
   if (missing.length) await db.insert(appSettings).values(missing);
+  // The brief isolator deploy left Neon on provider "isolator"; main only runs "random".
+  await touchSetting(db, "active_provider", "random");
+  await restoreDefaultCatalogue(db);
+}
+
+async function restoreDefaultCatalogue(db: { select: Function; insert: Function; update: Function }) {
+  const existing = await db.select().from(lottos);
+  const byId = new Map(existing.map((row: { id: string }) => [row.id, row]));
+  for (const row of LOTTO_SEED) {
+    if (byId.has(row.id)) {
+      await db
+        .update(lottos)
+        .set({
+          name: row.name,
+          countryCode: row.countryCode,
+          jurisdictionNote: row.jurisdictionNote,
+          mainCount: row.mainCount,
+          mainMin: row.mainMin,
+          mainMax: row.mainMax,
+          bonusCount: row.bonusCount,
+          bonusMin: row.bonusMin,
+          bonusMax: row.bonusMax,
+          bonusFromMainPool: row.bonusFromMainPool,
+          drawDays: row.drawDays,
+          isActive: true,
+          updatedAt: new Date(),
+        })
+        .where(eq(lottos.id, row.id));
+    } else {
+      await db.insert(lottos).values(row);
+    }
+  }
 }
 
 export async function touchSetting(db: { update: Function }, key: string, value: string) {
